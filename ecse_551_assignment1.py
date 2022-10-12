@@ -112,47 +112,144 @@ class GenerativeLearning:
     self.class0_count = self.data_class0.shape[0]
     self.class1_prior = self.class1_count / self.data.shape[0]
     self.class0_prior = self.class0_count / self.data.shape[0]
-    self.class1_mean = np.mean(self.data_class1[:,:-1], axis=0)
-    self.class0_mean = np.mean(self.data_class0[:,:-1], axis=0)
+    self.class1_mean = np.mean(self.data_class1[:,:-1], axis=0).reshape(1, -1)
+    self.class0_mean = np.mean(self.data_class0[:,:-1], axis=0).reshape(1, -1)
+    self.cov = np.zeros((self.data.shape[0], self.data.shape[0]))
 
     # Notice the difference in the covariance matrix calculation
-    self.cov = ((self.data_class1[:,:-1] - self.class1_mean).T @ (self.data_class1[:,:-1] - self.class1_mean) + (self.data_class0[:,:-1] - self.class0_mean).T @ (self.data_class0[:,:-1] - self.class0_mean)) / (self.class1_count + self.class0_count - 2)
+    self.cov[:self.class0]   # not necessearily diagonal. since y = 1 and y = 0 not in the same space
+    
+     = ((self.data_class1[:,:-1] - self.class1_mean) @ (self.data_class1[:,:-1] - self.class1_mean).T + (self.data_class0[:,:-1] - self.class0_mean) @ (self.data_class0[:,:-1] - self.class0_mean).T) / (self.class1_count + self.class0_count - 2)
     self.cov_class1 = (self.data_class1[:,:-1] - self.class1_mean).T @ (self.data_class1[:,:-1] - self.class1_mean) / (self.class1_count - 1)
     self.cov_class0 = (self.data_class0[:,:-1] - self.class0_mean).T @ (self.data_class0[:,:-1] - self.class0_mean) / (self.class0_count - 1)
     
 
-  def fit_lda_linear(self):
-
+  def fit_lda_linear_plt(self):
+    
     self.w0 = np.log(self.class1_prior) - np.log(self.class0_prior) - 0.5 * self.class1_mean .T @ np.linalg.inv(self.cov) @ self.class1_mean + 0.5 * self.class0_mean .T @ np.linalg.inv(self.cov) @ self.class0_mean
     self.w1 = np.linalg.inv(self.cov) @ (self.class1_mean - self.class0_mean)
     self.w = np.concatenate((self.w0.reshape(1,), self.w1))
 
     return self.w
+    
+
+  def fit_lda_linear(self, data, label):
+
+    data = data.T
+
+    if label == 1:
+
+        delta = data.T @ np.linalg.inv(self.cov) @ self.class1_mean - 0.5 * self.class1_mean.T @ np.linalg.inv(self.cov) @ self.class1_mean + np.log(self.class1_prior)
+
+    elif label == 0:
+
+        delta = data.T @ np.linalg.inv(self.cov) @ self.class0_mean - 0.5 * self.class0_mean.T @ np.linalg.inv(self.cov) @ self.class0_mean + np.log(self.class0_prior)
+
+    return delta
 
 
-  def fit_qda_linear(self):      # Should be fine, but has not been tested out
+  def fit_qda_linear(self, data, label):      # Should be fine, but has not been tested out
       
-      self.w0 = np.log(self.class1_prior) - np.log(self.class0_prior) + 0.5 * self.class1_mean .T @ np.linalg.inv(self.cov_class1) @ self.class1_mean - 0.5 * self.class0_mean .T @ np.linalg.inv(self.cov_class0) @ self.class0_mean - 0.5 * np.log(np.linalg.det(self.cov_class1)) + 0.5 * np.log(np.linalg.det(self.cov_class0))
-      self.w1 = np.linalg.inv(self.cov_class1) @ self.class1_mean - np.linalg.inv(self.cov_class0) @ self.class0_mean
-      self.w2 = (-0.5 * np.linalg.inv(self.cov_class1) + 0.5 * np.linalg.inv(self.cov_class0)).diagonal()
+      data = data.T
 
-      print("w0 is ", self.w0.shape)
-      print("w1 is ", self.w1.shape)
-      print("w2 is ", self.w2.shape)
-      print(self.w2)
-      self.w = np.concatenate((self.w0.reshape(1,), self.w1, self.w2))
+      if label == 1:
 
-      
+          delta = -0.5*np.log(np.linalg.det(self.cov_class1)) - 0.5*(data-self.class1_mean).T @ np.linalg.inv(self.cov_class1) @ (data-self.class1_mean) + np.log(self.class1_prior)
+
+      elif label == 0:
+
+          delta = -0.5*np.log(np.linalg.det(self.cov_class0)) - 0.5*(data-self.class0_mean).T @ np.linalg.inv(self.cov_class0) @ (data-self.class0_mean) + np.log(self.class0_prior)
   
-      return self.w
+      return delta
 
 
-  def predict(self, x):
+  def predict_lda(self, data):
+
+    if self.fit_lda_linear(data, 1) > self.fit_lda_linear(data, 0):
+
+      return 1
+
+    else:
+
+      return 0
+
+  def predict_qda(self, data):
+
+    if self.fit_qda_linear(data, 1) > self.fit_qda_linear(data, 0):
+
+      return 1
+
+    else:
+
+      return 0
+
+
+  def predict_plt(self, x):
 
     self.y = x @ self.w[1:] + self.w[0]
     # print(self.y)
     
     return self.y
+
+
+#%% #@ test_loop function: Testing loop that tries several data samples and returns some sort of accuracy
+
+def test_loop(data, model, model_type):
+
+    count_class1 = 0
+    count_class0 = 0
+    count_false1 = 0
+    count_false0 = 0
+
+    if model_type == 'lda':
+
+        for i in range(data.shape[0]):
+
+            prediction = model.predict_lda(data[[i], :])
+
+            if prediction == 1:
+
+                if data[i, -1] == 0:
+
+                    count_false1 += 1
+
+                count_class1 += 1
+
+            elif prediction == 0:
+
+                if data[i, -1] == 1:
+
+                    count_false0 += 1
+
+                count_class0 += 1
+
+    elif model_type == "qda":
+
+        for i in range(data.shape[0]):
+
+            prediction = model.predict_qda(data[[i], :])
+
+            if prediction == 1:
+
+                if data[i, -1] == 0:
+
+                    count_false1 += 1
+
+                count_class1 += 1
+
+            elif prediction == 0:
+
+                if data[i, -1] == 1:
+
+                    count_false0 += 1
+
+                count_class0 += 1
+
+
+    print('number of class1 samples: ', count_class1)
+    print('number of class0 samples: ', count_class0)
+    print('number of false class1 samples: ', count_false1)
+    print('number of false class0 samples: ', count_false0)
 
 
 #%% #@title augment_ones function: Function that augments the data with a column of ones
@@ -188,7 +285,7 @@ def fold_prep(data, train_num, validation_num, test_num):
     return data_train, data_val, data_test 
 
 
-    #%% #@title plot hist: Function that plots the histogram of one feature
+#%% #@title plot hist: Function that plots the histogram of one feature
 # The number of bins can be changed via rcParams above.
 
 def plot_hist(feat_class1, feat_class0, feat_num):
@@ -203,7 +300,7 @@ def plot_hist(feat_class1, feat_class0, feat_num):
   return 0
 
 
-  #%% #@title prediction_line: Function that plots the regression line
+#%% #@title prediction_line: Function that plots the regression line
 
 # Only used to show linear LDA. Not used for QDA.
 
@@ -264,36 +361,29 @@ def main():
     aq_x, aq_y = get_xy_data(aq_data)
     lp_x, lp_y = get_xy_data(lp_data)
 
+
     feat = 2   # Feature to analyse.
 
-    aq_data_aug = increase_complexity(aq_data, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
-
-    # print (aq_data_aug.shape)
-    # print(aq_data_aug)
+    # aq_data_aug = increase_complexity(aq_data, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
     data_class1, data_class0 = data_separation(aq_data)
 
     plot_hist(data_class1[:, feat], data_class0[:, feat], feat)
 
-    # Divide into inputs and outputs
-    # aq_x, aq_y = get_xy_data(aq_data)
-    # lp_x, lp_y = get_xy_data(lp_data)
-    # # aq_dl = DiscriminativeLearning(aq_x, aq_y, 0.001, 0.01)
-    # lp_dl = DiscriminativeLearning(lp_x, lp_y, 0.001, 0.01)
-    # # w1 = aq_dl.fit()
-    # w2 = lp_dl.fit()
-    # print(w2)
-
-    # plot_hist(data_class1[:,data_class0 feat], data_class0[:, feat], feat)
-
     model2 = GenerativeLearning(aq_data)
 
-    # data_class1, data_class0 = data_separation(aq_data)
-
-    w = model2.fit_lda_linear()
-    model2.predict(aq_data[:, :-1])
+    w = model2.fit_lda_linear_plt()
+    model2.predict_plt(aq_data[:, :-1])
     prediction_line(data_class1[:, :-1], data_class0[:, :-1], model2.w)
+
+
+    test_loop(aq_data[:, :-1], model2, "qda")
+
+
     plt.show()
+
+
+
   
 if __name__ == '__main__':
     main()
