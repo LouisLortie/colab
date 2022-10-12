@@ -34,10 +34,9 @@ plt.rcParams.update({
 #%% #@ Machine learning method: Classicifiation Discriminative learning
 class DiscriminativeLearning():
 
-    def __init__(self, x, y, step_size, epsilon):
+    def __init__(self, x, y, epsilon):
         self.x = np.insert(x, 0, 1, axis=1)
         self.y = y
-        self.step_size = step_size
         self.epsilon = epsilon
         self.w0 = np.zeros((self.x.shape[1], 1))
     
@@ -47,23 +46,25 @@ class DiscriminativeLearning():
         return s
 
     def fit(self):
-        delta = 0
         w_old = self.w0
         w_new = w_old
         while True:
+            delta = 0
             w_old = w_new
             for i in range(self.x.shape[0]):
+                step_size = 1 / (1 + i)
                 xi = self.x[i].reshape(-1,1)
                 yi = self.y[i]
                 delta = delta - xi @ (yi - self.logistic_function(w_old, xi))
-            w_new = w_old - self.step_size * delta
+            w_new = w_old - step_size * delta
             error = np.linalg.norm(w_new - w_old, ord =2)
             if error < self.epsilon:
                 break
         return w_new
 
     def predict(self, w, x):
-        x = np.insert(x, 0, 1, axis=1)
+        x = x.reshape(-1,1)
+        x = np.insert(x, 0, 1, axis=0)
         p = w.T @ x
         if p > 0.5:
             y = 1
@@ -153,6 +154,48 @@ class GenerativeLearning:
     # print(self.y)
     
     return self.y
+
+#%% #@title Machine learning method: K Fold Validation
+class KFoldValidation():
+    def __init__(self, data, model, k):
+        self.data = data
+        self.k = k
+        self.n = self.data.shape[0]
+        self.indices = np.arange(self.n)
+        self.fold_size = int(self.n / self.k)
+        self.fold_indices = np.array_split(self.indices, self.k)
+        self.model = model
+
+    def train_test_split(self, i):
+        test_indices = self.fold_indices[i]
+        train_indices = np.delete(self.indices, test_indices)
+        train_data = self.data[train_indices]
+        test_data = self.data[test_indices]
+        return train_data, test_data
+
+    def kfold_validation(self):
+        error_val = []
+        for i in range(self.k):
+            error = 0
+            train_data, test_data = self.train_test_split(i)
+            train_x, train_y = get_xy_data(train_data)
+            test_x, test_y = get_xy_data(test_data)
+            
+            if self.model == 1:
+                model = DiscriminativeLearning(train_x, train_y, 0.001)
+            # elif self.model == 2:
+            #     # TODO: Add model 2
+            # elif self.model == 3:
+            #     # TODO : Add model 3
+            w = model.fit()
+            for j in range(test_x.shape[0]):
+                xi = test_x[j]
+                yi = test_y[j]
+                y_pred = model.predict(w, xi)
+                error = error + (yi - y_pred)**2
+            error_val.append(error)
+        error_val = np.average(error_val)
+        return error_val
 
 
 #%% #@title augment_ones function: Function that augments the data with a column of ones
@@ -294,6 +337,10 @@ def main():
     model2.predict(aq_data[:, :-1])
     prediction_line(data_class1[:, :-1], data_class0[:, :-1], model2.w)
     plt.show()
+
+    k_fold_validation = KFoldValidation(lp_data, 1, 2)
+    model_error = k_fold_validation.kfold_validation()
+    print(model_error)
   
 if __name__ == '__main__':
     main()
