@@ -205,6 +205,7 @@ class GenerativeLearning_qda:
 #%% #@title Machine learning method: K Fold Validation
 class KFoldValidation():
     def __init__(self, data, model, k):
+        np.random.shuffle(data)
         self.data = data
         self.k = k
         self.n = self.data.shape[0]
