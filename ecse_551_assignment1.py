@@ -101,13 +101,14 @@ def data_separation(data):
   return data_class1, data_class0
 
 
-#%% #@title GenerativeLearning class: Generative model for binary classification
+#%% #@title GenerativeLearning for LDA class: Generative model for binary classification
 
-class GenerativeLearning:
+class GenerativeLearning_lda:
 
   def __init__(self, data):
     self.data = data
     self.data_class1, self.data_class0 = data_separation(data)
+    self.data = np.concatenate((self.data_class1, self.data_class0), axis=0)
     self.feat_count = feature_count(self.data)
     self.class1_count = self.data_class1.shape[0]
     self.class0_count = self.data_class0.shape[0]
@@ -115,68 +116,46 @@ class GenerativeLearning:
     self.class0_prior = self.class0_count / self.data.shape[0]
     self.class1_mean = np.mean(self.data_class1[:,:-1], axis=0).reshape(1, -1)
     self.class0_mean = np.mean(self.data_class0[:,:-1], axis=0).reshape(1, -1)
+    self.class1_x = self.data_class1[:,:-1]
+    self.class0_x = self.data_class0[:,:-1]
     self.cov = np.zeros((self.data.shape[0], self.data.shape[0]))
 
     # Notice the difference in the covariance matrix calculation
-    self.cov[:self.class0]   # not necessearily diagonal. since y = 1 and y = 0 not in the same space
-    
-    x = ((self.data_class1[:,:-1] - self.class1_mean) @ (self.data_class1[:,:-1] - self.class1_mean).T + (self.data_class0[:,:-1] - self.class0_mean) @ (self.data_class0[:,:-1] - self.class0_mean).T) / (self.class1_count + self.class0_count - 2)
-    self.cov_class1 = (self.data_class1[:,:-1] - self.class1_mean).T @ (self.data_class1[:,:-1] - self.class1_mean) / (self.class1_count - 1)
-    self.cov_class0 = (self.data_class0[:,:-1] - self.class0_mean).T @ (self.data_class0[:,:-1] - self.class0_mean) / (self.class0_count - 1)
-    
+
+    self.cov_class1 = (self.class1_x - self.class1_mean).T @ (self.class1_x - self.class1_mean) / (self.class1_count - 1)
+    self.cov_class0 = (self.class0_x - self.class0_mean).T @ (self.class0_x - self.class0_mean) / (self.class0_count - 1)
+
+    self.cov = ((self.class1_x - self.class1_mean).T @ (self.class1_x - self.class1_mean) + (self.class0_x - self.class0_mean).T @ (self.class0_x - self.class0_mean)) / (self.data.shape[0] - 2)
+
+    # need to check better way to find inverse of covariance matrix
+
 
   def fit_lda_linear_plt(self):
     
-    self.w0 = np.log(self.class1_prior) - np.log(self.class0_prior) - 0.5 * self.class1_mean .T @ np.linalg.inv(self.cov) @ self.class1_mean + 0.5 * self.class0_mean .T @ np.linalg.inv(self.cov) @ self.class0_mean
-    self.w1 = np.linalg.inv(self.cov) @ (self.class1_mean - self.class0_mean)
-    self.w = np.concatenate((self.w0.reshape(1,), self.w1))
+    self.w0 = np.log(self.class1_prior) - np.log(self.class0_prior) - 0.5 * self.class1_mean @ np.linalg.inv(self.cov) @ self.class1_mean.T + 0.5 * self.class0_mean @ np.linalg.inv(self.cov) @ self.class0_mean.T
+    self.w1 = np.linalg.inv(self.cov) @ (self.class1_mean - self.class0_mean).T
+    self.w = np.concatenate((self.w0, self.w1))
 
     return self.w
     
 
-  def fit_lda_linear(self, data, label):
+  def fit_lda(self, data, label):
 
-    data = data.T
 
     if label == 1:
 
-        delta = data.T @ np.linalg.inv(self.cov) @ self.class1_mean - 0.5 * self.class1_mean.T @ np.linalg.inv(self.cov) @ self.class1_mean + np.log(self.class1_prior)
+        delta = data @ np.linalg.inv(self.cov) @ self.class1_mean.T - 0.5 * self.class1_mean @ np.linalg.inv(self.cov) @ self.class1_mean.T + np.log(self.class1_prior)
 
     elif label == 0:
 
-        delta = data.T @ np.linalg.inv(self.cov) @ self.class0_mean - 0.5 * self.class0_mean.T @ np.linalg.inv(self.cov) @ self.class0_mean + np.log(self.class0_prior)
+        delta = data @ np.linalg.inv(self.cov) @ self.class0_mean.T - 0.5 * self.class0_mean @ np.linalg.inv(self.cov) @ self.class0_mean.T + np.log(self.class0_prior)
 
     return delta
 
 
-  def fit_qda_linear(self, data, label):      # Should be fine, but has not been tested out
-      
-      data = data.T
-
-      if label == 1:
-
-          delta = -0.5*np.log(np.linalg.det(self.cov_class1)) - 0.5*(data-self.class1_mean).T @ np.linalg.inv(self.cov_class1) @ (data-self.class1_mean) + np.log(self.class1_prior)
-
-      elif label == 0:
-
-          delta = -0.5*np.log(np.linalg.det(self.cov_class0)) - 0.5*(data-self.class0_mean).T @ np.linalg.inv(self.cov_class0) @ (data-self.class0_mean) + np.log(self.class0_prior)
-  
-      return delta
-
-
   def predict_lda(self, data):
 
-    if self.fit_lda_linear(data, 1) > self.fit_lda_linear(data, 0):
-
-      return 1
-
-    else:
-
-      return 0
-
-  def predict_qda(self, data):
-
-    if self.fit_qda_linear(data, 1) > self.fit_qda_linear(data, 0):
+    if self.fit_lda(data, 1) > self.fit_lda(data, 0):
 
       return 1
 
@@ -191,6 +170,61 @@ class GenerativeLearning:
     # print(self.y)
     
     return self.y
+
+
+#%% #@title GenerativeLearning for QDA class: Generative model for binary classification
+
+class GenerativeLearning_qda:
+
+  def __init__(self, data):
+    self.data = data
+    self.data_class1, self.data_class0 = data_separation(data)
+    self.data = np.concatenate((self.data_class1, self.data_class0), axis=0)
+    self.feat_count = feature_count(self.data)
+    self.class1_count = self.data_class1.shape[0]
+    self.class0_count = self.data_class0.shape[0]
+    self.class1_prior = self.class1_count / self.data.shape[0]
+    self.class0_prior = self.class0_count / self.data.shape[0]
+    self.class1_mean = np.mean(self.data_class1[:,:-1], axis=0).reshape(1, -1)
+    self.class0_mean = np.mean(self.data_class0[:,:-1], axis=0).reshape(1, -1)
+    self.class1_x = self.data_class1[:,:-1]
+    self.class0_x = self.data_class0[:,:-1]
+    self.cov = np.zeros((self.data.shape[0], self.data.shape[0]))
+
+    # Notice the difference in the covariance matrix calculation
+
+    self.cov_class1 = (self.class1_x - self.class1_mean).T @ (self.class1_x - self.class1_mean) / (self.class1_count - 1)
+    self.cov_class0 = (self.class0_x - self.class0_mean).T @ (self.class0_x - self.class0_mean) / (self.class0_count - 1)
+
+    self.cov = ((self.class1_x - self.class1_mean).T @ (self.class1_x - self.class1_mean) + (self.class0_x - self.class0_mean).T @ (self.class0_x - self.class0_mean)) / (self.data.shape[0] - 2)
+
+    # need to check better way to find inverse of covariance matrix
+
+
+  def fit_qda(self, data, label):      # Should be fine, but has not been tested out
+
+
+      if label == 1:
+
+          delta = -0.5*np.log(np.linalg.det(self.cov_class1)) - 0.5*(data-self.class1_mean) @ np.linalg.inv(self.cov_class1) @ (data-self.class1_mean).T + np.log(self.class1_prior)
+
+      elif label == 0:
+
+          delta = -0.5*np.log(np.linalg.det(self.cov_class0)) - 0.5*(data-self.class0_mean) @ np.linalg.inv(self.cov_class0) @ (data-self.class0_mean).T + np.log(self.class0_prior)
+  
+      return delta
+
+
+  def predict_qda(self, data):
+
+    if self.fit_qda(data, 1) > self.fit_qda(data, 0):
+
+      return 1
+
+    else:
+
+      return 0
+
 
 #%% #@title Machine learning method: K Fold Validation
 class KFoldValidation():
@@ -243,12 +277,13 @@ def test_loop(data, model, model_type):
     count_class0 = 0
     count_false1 = 0
     count_false0 = 0
+    test = 0
 
     if model_type == 'lda':
 
         for i in range(data.shape[0]):
 
-            prediction = model.predict_lda(data[[i], :])
+            prediction = model.predict_lda(data[[i], :-1])
 
             if prediction == 1:
 
@@ -270,7 +305,7 @@ def test_loop(data, model, model_type):
 
         for i in range(data.shape[0]):
 
-            prediction = model.predict_qda(data[[i], :])
+            prediction = model.predict_qda(data[[i], :-1])
 
             if prediction == 1:
 
@@ -362,11 +397,11 @@ def prediction_line(x_class1, x_class0, w):
 
     for i in range(y_class1.shape[0]):
         if y_class1[i] < 0:
-            count_false1 += 1
+            count_false0 += 1
 
     for i in range(y_class0.shape[0]):
         if y_class0[i] > 0:
-            count_false0 += 1
+            count_false1 += 1
 
     print("Number of false positives: %i" %(count_false1))
     print("Number of false negatives: %i" %(count_false0))
@@ -389,11 +424,11 @@ def main():
     # drive.mount('/content/drive')                    # Activate on drive
     # Reading air quality data
     # aq_csv = pd.read_csv("/content/drive/MyDrive/ecse_551/assignment1/air_quality.csv")                 # Active on drive
-    aq_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv") 
+    aq_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv", header=None)   # Active on colab
 
     # Reading liver patient data
     # lp_csv = pd.read_csv("/content/drive/MyDrive/ecse_551/assignment1/liver_patient.csv")               # Active on drive
-    lp_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv") 
+    lp_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv", header=None)   # Active on colab
     
 
     # Array
@@ -413,21 +448,20 @@ def main():
 
     plot_hist(data_class1[:, feat], data_class0[:, feat], feat)
 
-    model2 = GenerativeLearning(aq_data)
+    model_lda = GenerativeLearning_lda(aq_data)
+    model_qda = GenerativeLearning_qda(aq_data)
 
-    w = model2.fit_lda_linear_plt()
-    model2.predict_plt(aq_data[:, :-1])
-    prediction_line(data_class1[:, :-1], data_class0[:, :-1], model2.w)
+    w = model_lda.fit_lda_linear_plt()
+    prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
 
-
-    test_loop(aq_data[:, :-1], model2, "qda")
+    test_loop(aq_data, model_qda, "qda")
 
 
     plt.show()
 
-    k_fold_validation = KFoldValidation(lp_data, 1, 2)
-    model_error = k_fold_validation.kfold_validation()
-    print(model_error)
+    # k_fold_validation = KFoldValidation(lp_data, 1, 2)
+    # model_error = k_fold_validation.kfold_validation()
+    # print(model_error)
   
 if __name__ == '__main__':
     main()
