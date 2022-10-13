@@ -59,9 +59,11 @@ def data_separation(data):
 #%% #@ Machine learning method: Classicifiation Discriminative learning
 class DiscriminativeLearning():
 
-    def __init__(self, x, y, epsilon):
-        self.x = np.insert(x, 0, 1, axis=1)
-        self.y = y
+    def __init__(self, data, epsilon):
+        self.data = data
+        np.random.shuffle(self.data)
+        self.x, self.y = get_xy_data(self.data)
+        self.x = np.insert(self.x, 0, 1, axis=1)
         self.epsilon = epsilon
         self.w0 = np.zeros((self.x.shape[1], 1))
 
@@ -115,8 +117,6 @@ class DiscriminativeLearning():
         else:
             y = 0
         return y
-
-
 
 
 
@@ -232,8 +232,8 @@ class GenerativeLearning_qda:
 #%% #@title Machine learning method: K Fold Validation
 class KFoldValidation():
     def __init__(self, data, model, k):
-        np.random.shuffle(data)
         self.data = data
+        np.random.shuffle(self.data)
         self.k = k
         self.n = self.data.shape[0]
         self.indices = np.arange(self.n)
@@ -247,7 +247,7 @@ class KFoldValidation():
             raise ValueError("The fold number is out of range")
 
         valid_indices = self.fold_indices[i]
-        train_indices = np.delete(self.indices, valid_indices - 1)           # it was deleting the wrong indices
+        train_indices = np.delete(self.indices, valid_indices) 
         train_data = self.data[train_indices]
         valid_data = self.data[valid_indices]
 
@@ -261,11 +261,10 @@ class KFoldValidation():
 
             error = 0
             train_data, valid_data = self.train_valid_split(i)
-            train_x, train_y = get_xy_data(train_data)
             valid_x, valid_y = get_xy_data(valid_data)
             
             if self.model == "disc_l":
-                model = DiscriminativeLearning(train_x, train_y, 0.001)
+                model = DiscriminativeLearning(train_data, 0.001)
             elif self.model == "lda":
                 model = GenerativeLearning_lda(train_data)
             elif self.model == "qda":
@@ -297,55 +296,36 @@ def test_loop(data, model, model_type):
     count_false0 = 0
     test = 0
 
-    if model_type == 'lda':
+    for i in range(data.shape[0]):
 
-        for i in range(data.shape[0]):
-
+        if model_type == 'lda':
+            prediction = model.predict_lda(data[[i], :-1])
+        elif model_type == "qda":
+            prediction = model.predict_qda(data[[i], :-1])
+        elif model_type == "disc":
             prediction = model.predict(data[[i], :-1])
 
-            if prediction == 1:
+        if prediction == 1:
 
-                if data[i, -1] == 0:
+            if data[i, -1] == 0:
 
-                    count_false1 += 1
+                count_false1 += 1
 
-                count_class1 += 1
+            count_class1 += 1
 
-            elif prediction == 0:
+        elif prediction == 0:
 
-                if data[i, -1] == 1:
+            if data[i, -1] == 1:
 
-                    count_false0 += 1
+                count_false0 += 1
 
-                count_class0 += 1
-
-    elif model_type == "qda":
-
-        for i in range(data.shape[0]):
-
-            prediction = model.predict(data[[i], :-1])
-
-            if prediction == 1:
-
-                if data[i, -1] == 0:
-
-                    count_false1 += 1
-
-                count_class1 += 1
-
-            elif prediction == 0:
-
-                if data[i, -1] == 1:
-
-                    count_false0 += 1
-
-                count_class0 += 1
-
+            count_class0 += 1
 
     print('number of class1 samples: ', count_class1)
     print('number of class0 samples: ', count_class0)
     print('number of false class1 samples: ', count_false1)
     print('number of false class0 samples: ', count_false0)
+    print('accracy: ', 1- (count_false1 + count_false0) / (count_class1 + count_class0))
 
 
 #%% #@title augment_ones function: Function that augments the data with a column of ones
@@ -473,8 +453,14 @@ def main():
     model_qda.fit()
     w = model_lda.fit_lda_linear_plt()
     prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
-
     test_loop(aq_data, model_lda, "qda")
+
+    discriminative_learning = DiscriminativeLearning(lp_data, 0.001) # shuffles data for now
+    test_loop(lp_data, discriminative_learning, "disc")
+
+    # to unshuffle data just do. does the work easier than unshuffling data using a dedicated function.
+    aq_data = np.array(aq_csv)
+    lp_data = np.array(lp_csv)
 
     k_fold_validation = KFoldValidation(aq_data, "qda", 2)         # "disc_l" or "lda" or "qda"
     model_error = k_fold_validation.kfold_validation()
