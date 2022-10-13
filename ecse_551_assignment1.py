@@ -31,6 +31,31 @@ plt.rcParams.update({
                          })
 
 
+#%%    #@ Function that classifies the training data into the two binary classes
+def data_separation(data):
+
+  count_class1 = 0
+  count_class0 = 0
+  
+  for i in range(data.shape[0]) :      # all rows of data
+
+    if data[i, -1] == 0 :
+      if count_class0== 0 :
+        data_class0 = data[[i], :]
+      else :
+        data_class0 = np.concatenate((data_class0, data[[i], :]), axis=0)
+      count_class0+= 1
+
+    elif data[i, -1] == 1 :
+      if count_class1 == 0 :
+        data_class1 = data[[i], :]
+      else :
+        data_class1 = np.concatenate((data_class1, data[[i], :]), axis=0)
+      count_class1 += 1
+
+  return data_class1, data_class0
+
+  
 #%% #@ Machine learning method: Classicifiation Discriminative learning
 class DiscriminativeLearning():
 
@@ -76,29 +101,7 @@ class DiscriminativeLearning():
         return y
 
 
-#%%    #@ Function that classifies the training data into the two binary classes
-def data_separation(data):
 
-  count_class1 = 0
-  count_class0 = 0
-  
-  for i in range(data.shape[0]) :      # all rows of data
-
-    if data[i, -1] == 0 :
-      if count_class0== 0 :
-        data_class0 = data[[i], :]
-      else :
-        data_class0 = np.concatenate((data_class0, data[[i], :]), axis=0)
-      count_class0+= 1
-
-    elif data[i, -1] == 1 :
-      if count_class1 == 0 :
-        data_class1 = data[[i], :]
-      else :
-        data_class1 = np.concatenate((data_class1, data[[i], :]), axis=0)
-      count_class1 += 1
-
-  return data_class1, data_class0
 
 
 #%% #@title GenerativeLearning for LDA class: Generative model for binary classification
