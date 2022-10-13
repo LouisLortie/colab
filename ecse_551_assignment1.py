@@ -55,7 +55,7 @@ def data_separation(data):
 
   return data_class1, data_class0
 
-  
+
 #%% #@ Machine learning method: Classicifiation Discriminative learning
 class DiscriminativeLearning():
 
@@ -64,33 +64,49 @@ class DiscriminativeLearning():
         self.y = y
         self.epsilon = epsilon
         self.w0 = np.zeros((self.x.shape[1], 1))
+
     
     def logistic_function(self, w, xi):
         a = w.T @ xi
         s = 1 / (1 + np.exp(-a))
         return s
 
+
     def fit(self):
+
         w_old = self.w0
         w_new = w_old
+
         while True:
+
             delta = 0
             w_old = w_new
+
             for i in range(self.x.shape[0]):
+
                 step_size = 1 / (1 + i)
                 xi = self.x[i].reshape(-1,1)
                 yi = self.y[i]
                 delta = delta - xi @ (yi - self.logistic_function(w_old, xi))
+
             w_new = w_old - step_size * delta
             error = np.linalg.norm(w_new - w_old, ord =2)
-            if error < self.epsilon:
-                break
-        return w_new
 
-    def predict(self, w, x):
+            if error < self.epsilon:
+                
+                break
+        
+        self.w = w_new
+
+        return 0
+
+
+    def predict(self, x):
+
         x = x.reshape(-1,1)
         x = np.insert(x, 0, 1, axis=0)
-        p = w.T @ x
+        p = self.w.T @ x
+        
         if p > 0.5:
             y = 1
         elif p == 0.5:
@@ -149,6 +165,10 @@ class GenerativeLearning_lda:
 
       return 1
 
+    elif delta1 == delta0:
+
+        return np.random.randint(0,2)
+
     else:
 
       return 0
@@ -200,6 +220,10 @@ class GenerativeLearning_qda:
 
       return 1
 
+    elif delta1 == delta0:
+
+        np.random.randint(0,2)
+
     else:
 
       return 0
@@ -217,24 +241,28 @@ class KFoldValidation():
         self.fold_indices = np.array_split(self.indices, self.k)
         self.model = model
 
-    def train_test_split(self, i):
+    def train_valid_split(self, i):
 
         if i >= self.k:
             raise ValueError("The fold number is out of range")
 
-        test_indices = self.fold_indices[i]
-        train_indices = np.delete(self.indices, test_indices - 1)           # it was deleting the wrong indices
+        valid_indices = self.fold_indices[i]
+        train_indices = np.delete(self.indices, valid_indices - 1)           # it was deleting the wrong indices
         train_data = self.data[train_indices]
-        test_data = self.data[test_indices]
-        return train_data, test_data
+        valid_data = self.data[valid_indices]
+
+        return train_data, valid_data
 
     def kfold_validation(self):
+
         error_val = []
+
         for i in range(self.k):
+
             error = 0
-            train_data, test_data = self.train_test_split(i)
+            train_data, valid_data = self.train_valid_split(i)
             train_x, train_y = get_xy_data(train_data)
-            test_x, test_y = get_xy_data(test_data)
+            valid_x, valid_y = get_xy_data(valid_data)
             
             if self.model == "disc_l":
                 model = DiscriminativeLearning(train_x, train_y, 0.001)
@@ -243,14 +271,19 @@ class KFoldValidation():
             elif self.model == "qda":
                 model = GenerativeLearning_qda(train_data)
 
-            w = model.fit()
-            for j in range(test_x.shape[0]):              # This should be done in a matrix way. Let the input to predict be a matrix.
-                xi = test_x[j]
-                yi = test_y[j]
-                y_pred = model.predict(w, xi)
-                error = error + (yi - y_pred)**2
+            model.fit()
+
+            for j in range(valid_x.shape[0]):              # This should be done in a matrix way. Let the input to predict be a matrix.
+
+                xi = valid_x[j]
+                yi = valid_y[j]
+                y_pred = model.predict(xi)
+                error = error + np.abs(yi - y_pred)
+
             error_val.append(error)
+
         error_val = np.average(error_val)
+
         return error_val
 
 
@@ -441,14 +474,13 @@ def main():
     w = model_lda.fit_lda_linear_plt()
     prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
 
-    test_loop(aq_data, model_lda, "lda")
+    test_loop(aq_data, model_lda, "qda")
 
+    k_fold_validation = KFoldValidation(aq_data, "qda", 2)         # "disc_l" or "lda" or "qda"
+    model_error = k_fold_validation.kfold_validation()
+    print("model error is: ", model_error)
 
     plt.show()
-
-    k_fold_validation = KFoldValidation(lp_data, "disc_l", 2)         # "disc_l" or "lda" or "qda"
-    model_error = k_fold_validation.kfold_validation()
-    print(model_error)
   
 if __name__ == '__main__':
     main()
