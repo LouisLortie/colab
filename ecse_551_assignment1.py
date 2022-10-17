@@ -255,7 +255,7 @@ class KFoldValidation():
 
     def kfold_validation(self):
 
-        error_val = []
+        count = np.array([0, 0, 0, 0]).reshape(-1,)                             # This array is used to count the number of true positive, true negative, false positive and false negative.
 
         for i in range(self.k):
 
@@ -272,18 +272,53 @@ class KFoldValidation():
 
             model.fit()
 
-            for j in range(valid_x.shape[0]):              # This should be done in a matrix way. Let the input to predict be a matrix.
+            for j in range(valid_x.shape[0]):                      # This should be done in a matrix way. Let the input to predict be a matrix.
 
                 xi = valid_x[j]
                 yi = valid_y[j]
                 y_pred = model.predict(xi)
-                error = error + np.abs(yi - y_pred)
 
-            error_val.append(error)
+                count = error_measures(y_pred, yi, count)          # This function is used to count the number of true positive, true negative, false positive and false negative.
 
-        error_val = np.average(error_val)
+        return count/self.k
 
-        return error_val
+
+def error_measures(y_pred, y_val, count):
+
+    if y_pred == 1 and y_val == 1:
+        count[0] += 1
+    elif y_pred == 0 and y_val == 0:
+        count[1] += 1
+    elif y_pred == 1 and y_val == 0:
+        count[2] += 1
+    elif y_pred == 0 and y_val == 1:
+        count[3] += 1
+
+    return count
+
+
+class accu_eval():
+    def __init__(self, count):
+        self.count = count
+
+    def common_measures(self):
+        accuracy = (self.count[0] + self.count[1]) / (self.count[0] + self.count[1] + self.count[2] + self.count[3])
+        precision = self.count[0] / (self.count[0] + self.count[2])
+        recall = self.count[0] / (self.count[0] + self.count[3])
+        sensitivity = self.count[0] / (self.count[0] + self.count[3])
+        specificity = self.count[1] / (self.count[1] + self.count[2])
+        false_positive_rate = self.count[2] / (self.count[2] + self.count[1])
+        true_positive_rate = recall
+        f1_score = 2 * (precision * recall) / (precision + recall)
+
+        return f1_score                     # change if you want to see other measures
+
+
+    def mcc(self):                          # This function is used to calculate the Matthews correlation coefficient.
+
+        mcc = (self.count[0] * self.count[1] - self.count[2] * self.count[3]) / np.sqrt((self.count[0] + self.count[2]) * (self.count[0] + self.count[3]) * (self.count[1] + self.count[2]) * (self.count[1] + self.count[3]))
+
+        return mcc
 
 
 #%% #@ test_loop function: Testing loop that tries several data samples and returns some sort of accuracy
@@ -299,9 +334,9 @@ def test_loop(data, model, model_type):
     for i in range(data.shape[0]):
 
         if model_type == 'lda':
-            prediction = model.predict_lda(data[[i], :-1])
+            prediction = model.predict(data[[i], :-1])
         elif model_type == "qda":
-            prediction = model.predict_qda(data[[i], :-1])
+            prediction = model.predict(data[[i], :-1])
         elif model_type == "disc":
             prediction = model.predict(data[[i], :-1])
 
@@ -438,7 +473,7 @@ def main():
     lp_x, lp_y = get_xy_data(lp_data)
 
 
-    feat = 2   # Feature to analyse.
+    feat = 8   # Feature to analyse.
 
     # aq_data_aug = increase_complexity(aq_data, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
@@ -446,25 +481,37 @@ def main():
 
     plot_hist(data_class1[:, feat], data_class0[:, feat], feat)
 
+    # All model creation happens here
+
     model_lda = GenerativeLearning_lda(aq_data)
     model_qda = GenerativeLearning_qda(aq_data)
+    discriminative_learning = DiscriminativeLearning(lp_data, 0.001) # shuffles data for now
 
     model_lda.fit()
     model_qda.fit()
     w = model_lda.fit_lda_linear_plt()
-    prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
-    test_loop(aq_data, model_lda, "qda")
 
-    discriminative_learning = DiscriminativeLearning(lp_data, 0.001) # shuffles data for now
-    test_loop(lp_data, discriminative_learning, "disc")
+    model_label = "lda"                 # can be changed to "lda", "qda" or "disc"
+
+    prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
+
+    test_loop(aq_data, model_lda, model_label)
 
     # to unshuffle data just do. does the work easier than unshuffling data using a dedicated function.
     aq_data = np.array(aq_csv)
     lp_data = np.array(lp_csv)
 
-    k_fold_validation = KFoldValidation(aq_data, "qda", 2)         # "disc_l" or "lda" or "qda"
-    model_error = k_fold_validation.kfold_validation()
-    print("model error is: ", model_error)
+    k_fold_validation = KFoldValidation(aq_data, model_label, 2)         # "disc_l" or "lda" or "qda"
+    count = k_fold_validation.kfold_validation()
+    print("model error is: ", count)
+
+    error_metric = accu_eval(count)
+
+    f1_score = error_metric.common_measures()
+    print("f1 score is: ", f1_score)
+
+    mcc = error_metric.mcc()
+    print("mcc is: ", mcc)
 
     plt.show()
   
