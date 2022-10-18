@@ -7,8 +7,8 @@ from Classes import Model   as Mdl
 # %--------------------------------------------------- Main --------------------------------------------------------% #
 def main():
     # [Parameteres] : Data Set
-    visualizeData = False
-    pltStd, pltMean, pltSpread = True, True, True
+    visualizeData = True
+    pltStd, pltMean, pltSpread, pltHist = False, False, False, True
 
     # [Parameteres] : Data Files to read from
     dataFiles = ["./air_quality.csv",
@@ -36,7 +36,7 @@ def main():
         # Generate Model from list of CSV Files
         tDataSet = Dset.Dataset(file)
         if (visualizeData): 
-            Dset.Dataset.analyzeData(tDataSet,  pltStd, pltMean, pltSpread)
+            Dset.Dataset.analyzeData(tDataSet,  pltStd, pltMean, pltSpread, pltHist)
             
         print(f'\nFinished Reading from [{file}] file.')
 

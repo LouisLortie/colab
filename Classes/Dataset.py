@@ -63,15 +63,48 @@ class Dataset:
             plt.title(f'{self.name}\n Feature {f+1}') 
     
     # TODO: Add histogram plot
+
+    def plot_histogram(self):
+
+        plt.style.use('classic')
+        plt.rcParams.update({
+                         "lines.linewidth" : 3,                          # you should make this general for all plots
+                         "font.size" : 17,
+                         "figure.constrained_layout.use" : True,
+                         "hist.bins" : 20 
+                         })
+
+        fig, ax = plt.subplots(int(np.ceil(self.Class1.X.shape[1]/4)), 4, sharex=False)
+
+        data = np.concatenate((self.Class1.X, self.Class0.X), axis=0)
+
+        for i in range(data.shape[1]):
+            ax[int(i/4), i%4].hist([self.Class1.X[:, i], self.Class0.X[:, i]], density=True, label=['class1', 'class0'], color=['blue', 'red'])
+            ax[int(i/4), i%4].set_title('Feature ' + str(i+1))
+
+            #show average and standard deviation
+            textstr = '\n'.join((
+                r'$\mu_{class0}=%.2f$' % (np.mean(self.Class0.X[:, i]), ),
+                r'$\sigma_{class0}=%.2f$' % (np.std(self.Class0.X[:, i]), ), 
+                r'$\mu_{class1}=%.2f$' % (np.mean(self.Class1.X[:, i]), ),
+                r'$\sigma_{class1}=%.2f$' % (np.std(self.Class1.X[:, i]), )))
+
+            ax[int(i/4), i%4].text(0.67, 0.60, textstr, transform=ax[int(i/4), i%4].transAxes)
+            
+        # ax[int(i/4), i%4].text(0.5, 0.5, 'mean: ' + str(np.round(np.mean(data[:, i]), 2)) + 'standard deviation: ' + str(np.round(np.std(data[:, i]), 2)), horizontalalignment='center', verticalalignment='center')
+        
+        ax[0, 0].legend(loc='lower right')
+
     # TODO: Add subplots
     
     # Purpose: Run tests
     @staticmethod
-    def analyzeData(dataSet, Dstd=False, Dmean=False, Dspread=False):
+    def analyzeData(dataSet, Dstd=False, Dmean=False, Dspread=False, Hist=False):
         # Compare the spread and mean of the features of each class
         if(Dstd):    dataSet.plotDatasetFeatureStd()
         if(Dmean):   dataSet.plotDatasetFeatureMeans()
         if(Dspread): dataSet.plotDatasetFeatureSpread() 
+        if(Hist): dataSet.plot_histogram()
         plt.show()    
         
     class Classifier:
