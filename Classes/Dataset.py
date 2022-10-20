@@ -95,6 +95,11 @@ class Dataset:
         
         ax[0, 0].legend(loc='lower right')
 
+        if self.Class1.X.shape[0] == 855 : 
+            plt.savefig('air_quality_histogram.pdf') 
+        elif self.Class1.X.shape[0] == 165 :
+            plt.savefig('liver_disease_histogram.pdf')
+
     # TODO: Add subplots
     
     # Purpose: Run tests
