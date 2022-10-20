@@ -1,4 +1,8 @@
 # ECSE 551 - A1
+# Authors: 
+# - Louis Lortie
+# - Sepehr Moalemi
+# - Syed Shabbir Ahmed
 # %------------------------------------------------- Packages ----------------------------------------------------% #
 import numpy               as np
 import matplotlib.pyplot   as plt
@@ -39,7 +43,6 @@ class Dataset:
         plt.title(f'{self.name}\nFeature Means')
     
     # Purpose: Compare the mean of each feature for both classes
-    # # Plots the mean of each Feature
     def plotDatasetFeatureStd(self):     
         plt.figure(figsize=(15,8))
         self.Class1.plotFeatureStd()
@@ -47,7 +50,6 @@ class Dataset:
         plt.title(f'{self.name}\nFeature Standard Deviation')
 
     # Purpose: Compare the spread of features for both classes
-    # # Plots the sorted version of each Feature
     def plotDatasetFeatureSpread(self):
         x1 = range(0, self.Class1.rows)
         x0 = range(0, self.Class0.rows)
@@ -62,16 +64,15 @@ class Dataset:
             plt.xlabel('Observation'); plt.ylabel('Value')
             plt.title(f'{self.name}\n Feature {f+1}') 
     
-    # TODO: Add histogram plot
-
+    # Purpose: Plor Histogram
     def plot_histogram(self):
 
         plt.style.use('classic')
         plt.rcParams.update({
-                         "lines.linewidth" : 3,                          # you should make this general for all plots
+                         "lines.linewidth" : 3,  
                          "font.size" : 17,
                          "figure.constrained_layout.use" : True,
-                         "hist.bins" : 40 
+                         "hist.bins" : 20 
                          })
 
         fig, ax = plt.subplots(int(np.ceil(self.Class1.X.shape[1]/4)), 4, sharex=False)
@@ -79,8 +80,8 @@ class Dataset:
         data = np.concatenate((self.Class1.X, self.Class0.X), axis=0)
 
         for i in range(data.shape[1]):
-            ax[int(i/4), i%4].hist([self.Class1.X[:, i], self.Class0.X[:, i]], density=True, label=['class1', 'class0'], color=['blue', 'red'])
-            ax[int(i/4), i%4].set_title('Feature ' + str(i+1))
+            ax[int(i/4)][i%4].hist([self.Class1.X[:, i], self.Class0.X[:, i]], density=True)
+            ax[int(i/4)][i%4].set_title('Feature ' + str(i+1))
 
             #show average and standard deviation
             textstr = '\n'.join((
@@ -89,27 +90,16 @@ class Dataset:
                 r'$\mu_{class1}=%.2f$' % (np.mean(self.Class1.X[:, i]), ),
                 r'$\sigma_{class1}=%.2f$' % (np.std(self.Class1.X[:, i]), )))
 
-            ax[int(i/4), i%4].text(0.67, 0.60, textstr, transform=ax[int(i/4), i%4].transAxes)
-            
-        # ax[int(i/4), i%4].text(0.5, 0.5, 'mean: ' + str(np.round(np.mean(data[:, i]), 2)) + 'standard deviation: ' + str(np.round(np.std(data[:, i]), 2)), horizontalalignment='center', verticalalignment='center')
-        
-        ax[0, 0].legend(loc='lower right')
-
-        if self.Class1.X.shape[0] == 855 : 
-            plt.savefig('air_quality_histogram.pdf') 
-        elif self.Class1.X.shape[0] == 165 :
-            plt.savefig('liver_disease_histogram.pdf')
-
-    # TODO: Add subplots
+            ax[int(i/4)][i%4].text(0.67, 0.60, textstr, transform=ax[int(i/4)][i%4].transAxes)
+        ax[0][0].legend(loc='lower right')
     
     # Purpose: Run tests
-    @staticmethod
-    def analyzeData(dataSet, Dstd=False, Dmean=False, Dspread=False, Hist=False):
+    def analyzeData(self, Dstd=False, Dmean=False, Dspread=False, DHist=False):
         # Compare the spread and mean of the features of each class
-        if(Dstd):    dataSet.plotDatasetFeatureStd()
-        if(Dmean):   dataSet.plotDatasetFeatureMeans()
-        if(Dspread): dataSet.plotDatasetFeatureSpread() 
-        if(Hist): dataSet.plot_histogram()
+        if(Dstd):    self.plotDatasetFeatureStd()
+        if(Dmean):   self.plotDatasetFeatureMeans()
+        if(Dspread): self.plotDatasetFeatureSpread() 
+        if(DHist):   self.plot_histogram()
         plt.show()    
         
     class Classifier:

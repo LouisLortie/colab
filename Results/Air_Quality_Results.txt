@@ -1,0 +1,935 @@
+==============================2022-10-20 15:41:46==============================
+=============== Effect of Removing Identical Observations on Model Accuracy ===============
+-------------------- Gradient Decent --------------------
+Removed a 220 Identical Observations in the same class from Data
+Removed a 0 Identical Observations in diffrent classes from Data
+Errors                  Not Removed           Removed       
+False Positive Rate:       13.321              13.466       
+False Negative Rate:       12.508              12.730       
+F1 Measure:                99.828              99.794       
+Accuracy:                  74.171              73.804       
+Error:                     25.829              26.196       
+
+=============== Effect of Stepsize and Laso Const on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+
+-------------------- lambda k : 1/((k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       13.459              13.459              13.522       
+False Negative Rate:       12.893              12.830              12.893       
+F1 Measure:                98.282              98.284              98.281       
+Accuracy:                  73.648              73.711              73.585       
+Error:                     26.352              26.289              26.415       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       13.648       
+False Negative Rate:       12.516       
+F1 Measure:                98.300       
+Accuracy:                  73.836       
+Error:                     26.164       
+
+
+-------------------- lambda k : 1/(5*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.390              12.327              12.327       
+False Negative Rate:       13.208              13.208              13.208       
+F1 Measure:                98.273              98.273              98.273       
+Accuracy:                  74.403              74.465              74.465       
+Error:                     25.597              25.535              25.535       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.201       
+False Negative Rate:       13.270       
+F1 Measure:                98.270       
+Accuracy:                  74.528       
+Error:                     25.472       
+
+
+-------------------- lambda k : 1/(10*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       11.761              11.698              11.698       
+False Negative Rate:       13.899              13.899              13.899       
+F1 Measure:                98.238              98.239              98.239       
+Accuracy:                  74.340              74.403              74.403       
+Error:                     25.660              25.597              25.597       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.635       
+False Negative Rate:       13.836       
+F1 Measure:                98.241       
+Accuracy:                  74.528       
+Error:                     25.472       
+
+
+-------------------- lambda k : 1/(50*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.956              12.956              12.956       
+False Negative Rate:       14.025              14.025              13.962       
+F1 Measure:                98.230              98.230              98.232       
+Accuracy:                  73.019              73.019              73.082       
+Error:                     26.981              26.981              26.918       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.956       
+False Negative Rate:       13.899       
+F1 Measure:                98.236       
+Accuracy:                  73.145       
+Error:                     26.855       
+
+
+-------------------- lambda k : 1/(100*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       13.899              13.899              13.899       
+False Negative Rate:       13.145              13.145              13.208       
+F1 Measure:                98.266              98.266              98.263       
+Accuracy:                  72.956              72.956              72.893       
+Error:                     27.044              27.044              27.107       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       13.899       
+False Negative Rate:       13.019       
+F1 Measure:                98.271       
+Accuracy:                  73.082       
+Error:                     26.918       
+
+
+-------------------- lambda k : 1/((k+1)**2) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       13.899              13.899              13.899       
+False Negative Rate:       13.711              13.711              13.711       
+F1 Measure:                98.234              98.234              98.234       
+Accuracy:                  72.390              72.390              72.390       
+Error:                     27.610              27.610              27.610       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       13.899       
+False Negative Rate:       13.711       
+F1 Measure:                98.234       
+Accuracy:                  72.390       
+Error:                     27.610       
+
+
+-------------------- lambda k : 0.01 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       2.264               2.264               2.264        
+False Negative Rate:       31.069              31.132              31.132       
+F1 Measure:                96.867              96.857              96.857       
+Accuracy:                  66.667              66.604              66.604       
+Error:                     33.333              33.396              33.396       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       2.201        
+False Negative Rate:       31.572       
+F1 Measure:                96.792       
+Accuracy:                  66.226       
+Error:                     33.774       
+
+
+-------------------- lambda k : 0.005 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       4.843               4.780               4.780        
+False Negative Rate:       26.038              26.038              26.101       
+F1 Measure:                97.440              97.441              97.436       
+Accuracy:                  69.119              69.182              69.119       
+Error:                     30.881              30.818              30.881       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       4.465        
+False Negative Rate:       26.855       
+F1 Measure:                97.363       
+Accuracy:                  68.679       
+Error:                     31.321       
+
+
+-------------------- lambda k : 0.0025 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.201              12.138              12.201       
+False Negative Rate:       13.459              13.522              13.396       
+F1 Measure:                98.260              98.257              98.263       
+Accuracy:                  74.340              74.340              74.403       
+Error:                     25.660              25.660              25.597       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.013       
+False Negative Rate:       13.522       
+F1 Measure:                98.258       
+Accuracy:                  74.465       
+Error:                     25.535       
+
+
+-------------------- lambda k : 0.001 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.138              12.075              12.138       
+False Negative Rate:       13.585              13.585              13.585       
+F1 Measure:                98.253              98.254              98.253       
+Accuracy:                  74.277              74.340              74.277       
+Error:                     25.723              25.660              25.723       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.698       
+False Negative Rate:       13.711       
+F1 Measure:                98.253       
+Accuracy:                  74.591       
+Error:                     25.409       
+
+
+-------------------- lambda k : 0.0005 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       11.824              11.824              11.824       
+False Negative Rate:       13.774              13.774              13.774       
+F1 Measure:                98.247              98.247              98.247       
+Accuracy:                  74.403              74.403              74.403       
+Error:                     25.597              25.597              25.597       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.824       
+False Negative Rate:       13.774       
+F1 Measure:                98.249       
+Accuracy:                  74.403       
+Error:                     25.597       
+
+
+-------------------- lambda k : 0.00025 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       11.950              11.950              11.950       
+False Negative Rate:       14.025              14.025              14.025       
+F1 Measure:                98.232              98.232              98.232       
+Accuracy:                  74.025              74.025              74.025       
+Error:                     25.975              25.975              25.975       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.635       
+False Negative Rate:       13.962       
+F1 Measure:                98.238       
+Accuracy:                  74.403       
+Error:                     25.597       
+
+=============== Effect of Tol and Max Iter on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+
+--------------------Tol = 0.001 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.453              12.453              12.453       
+False Negative Rate:       13.333              13.333              13.333       
+F1 Measure:                98.271              98.271              98.271       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+
+--------------------Tol = 0.0001 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.704              12.704              12.704       
+False Negative Rate:       13.082              13.082              13.082       
+F1 Measure:                98.284              98.284              98.284       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+
+--------------------Tol = 1e-05 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.704              12.642              12.642       
+False Negative Rate:       13.082              13.145              13.145       
+F1 Measure:                98.284              98.280              98.280       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+=============== Effect of Removing Each Individual Feature on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.767              12.516              11.887       
+False Negative Rate:       13.145              14.277              14.025       
+F1 Measure:                98.271              98.221              98.236       
+Accuracy:                  74.088              73.208              74.088       
+Error:                     25.912              26.792              25.912       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.453              12.264              12.956       
+False Negative Rate:       13.145              13.396              13.082       
+F1 Measure:                98.279              98.265              98.277       
+Accuracy:                  74.403              74.340              73.962       
+Error:                     25.597              25.660              26.038       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.390              12.516              12.579       
+False Negative Rate:       14.025              13.145              12.956       
+F1 Measure:                98.232              98.275              98.285       
+Accuracy:                  73.585              74.340              74.465       
+Error:                     26.415              25.660              25.535       
+
+Errors                   Feature 10          Feature 11       No Modifications  
+False Positive Rate:       12.453              14.151              12.453       
+False Negative Rate:       13.648              13.145              13.019       
+F1 Measure:                98.253              98.264              98.284       
+Accuracy:                  73.899              72.704              74.528       
+Error:                     26.101              27.296              25.472       
+
+=============== Effect of Removing a Combination of Features on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                 Feature [1, 9]      Feature [1, 4]      Feature [4, 9]   
+False Positive Rate:       12.579              12.264              12.453       
+False Negative Rate:       13.145              13.145              13.082       
+F1 Measure:                98.286              98.288              98.292       
+Accuracy:                  74.277              74.591              74.465       
+Error:                     25.723              25.409              25.535       
+
+Errors               Feature [1, 4, 9]     Feature [5, 9]      Feature [5, 4]   
+False Positive Rate:       12.390              12.013              12.201       
+False Negative Rate:       12.956              13.333              13.396       
+F1 Measure:                98.296              98.285              98.280       
+Accuracy:                  74.654              74.654              74.403       
+Error:                     25.346              25.346              25.597       
+
+Errors                 Feature [1, 5]    Feature [5, 4, 9]  Feature [1, 5, 4, 9]
+False Positive Rate:       12.767              12.075              12.642       
+False Negative Rate:       13.396              13.270              13.082       
+F1 Measure:                98.274              98.287              98.290       
+Accuracy:                  73.836              74.654              74.277       
+Error:                     26.164              25.346              25.723       
+
+Errors                 Feature [3, 5]      Feature [3, 8]      Feature [5, 8]   
+False Positive Rate:       12.138              11.761              12.327       
+False Negative Rate:       13.711              14.088              13.648       
+F1 Measure:                98.263              98.247              98.266       
+Accuracy:                  74.151              74.151              74.025       
+Error:                     25.849              25.849              25.975       
+
+Errors               Feature [3, 5, 8]    No Modifications  
+False Positive Rate:       11.887              12.264       
+False Negative Rate:       14.025              13.270       
+F1 Measure:                98.251              98.285       
+Accuracy:                  74.088              74.465       
+Error:                     25.912              25.535       
+
+=============== Effect of Adding Feature Complexity on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.log(x + 1) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.390              12.579       
+False Negative Rate:       13.145              13.019              13.145       
+F1 Measure:                98.291              98.298              98.290       
+Accuracy:                  74.465              74.591              74.277       
+Error:                     25.535              25.409              25.723       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.390              12.516              12.516       
+False Negative Rate:       13.082              13.082              13.145       
+F1 Measure:                98.295              98.294              98.290       
+Accuracy:                  74.528              74.403              74.340       
+Error:                     25.472              25.597              25.660       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.516              12.704              12.390       
+False Negative Rate:       13.019              13.082              13.145       
+F1 Measure:                98.297              98.291              98.292       
+Accuracy:                  74.465              74.214              74.465       
+Error:                     25.535              25.786              25.535       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.log10(x + 1) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.453              12.516       
+False Negative Rate:       13.082              13.082              13.145       
+F1 Measure:                98.294              98.295              98.291       
+Accuracy:                  74.528              74.465              74.340       
+Error:                     25.472              25.535              25.660       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.327              12.327              12.579       
+False Negative Rate:       13.145              13.270              13.145       
+F1 Measure:                98.293              98.286              98.290       
+Accuracy:                  74.528              74.403              74.277       
+Error:                     25.472              25.597              25.723       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.453              12.453              12.390       
+False Negative Rate:       13.082              13.019              13.145       
+F1 Measure:                98.294              98.297              98.292       
+Accuracy:                  74.465              74.528              74.465       
+Error:                     25.535              25.472              25.535       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.sqrt(x) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.264              12.390              12.327       
+False Negative Rate:       13.270              12.956              13.208       
+F1 Measure:                98.286              98.301              98.289       
+Accuracy:                  74.465              74.654              74.465       
+Error:                     25.535              25.346              25.535       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.264              12.390              12.453       
+False Negative Rate:       13.145              13.270              13.019       
+F1 Measure:                98.292              98.287              98.297       
+Accuracy:                  74.591              74.340              74.528       
+Error:                     25.409              25.660              25.472       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.453              12.830              12.390       
+False Negative Rate:       13.019              13.082              13.145       
+F1 Measure:                98.298              98.290              98.292       
+Accuracy:                  74.528              74.088              74.465       
+Error:                     25.472              25.912              25.535       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**2 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.327              12.390              12.390       
+False Negative Rate:       13.208              13.208              13.082       
+F1 Measure:                98.290              98.288              98.295       
+Accuracy:                  74.465              74.403              74.528       
+Error:                     25.535              25.597              25.472       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.453              12.579              12.138       
+False Negative Rate:       13.208              13.208              13.019       
+F1 Measure:                98.288              98.288              98.300       
+Accuracy:                  74.340              74.214              74.843       
+Error:                     25.660              25.786              25.157       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.264              12.453              12.390       
+False Negative Rate:       13.208              13.208              13.145       
+F1 Measure:                98.289              98.288              98.292       
+Accuracy:                  74.528              74.340              74.465       
+Error:                     25.472              25.660              25.535       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**3 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.390              12.453       
+False Negative Rate:       13.270              13.208              13.208       
+F1 Measure:                98.286              98.288              98.288       
+Accuracy:                  74.340              74.403              74.340       
+Error:                     25.660              25.597              25.660       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.516              12.075       
+False Negative Rate:       13.208              13.208              13.333       
+F1 Measure:                98.288              98.288              98.285       
+Accuracy:                  74.277              74.277              74.591       
+Error:                     25.723              25.723              25.409       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.453              12.453              12.390       
+False Negative Rate:       13.082              13.208              13.145       
+F1 Measure:                98.295              98.289              98.292       
+Accuracy:                  74.465              74.340              74.465       
+Error:                     25.535              25.660              25.535       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**4 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.327              12.390       
+False Negative Rate:       13.208              13.145              13.145       
+F1 Measure:                98.289              98.292              98.292       
+Accuracy:                  74.403              74.528              74.465       
+Error:                     25.597              25.472              25.535       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.390              12.075       
+False Negative Rate:       13.145              13.145              13.333       
+F1 Measure:                98.291              98.292              98.285       
+Accuracy:                  74.340              74.465              74.591       
+Error:                     25.660              25.535              25.409       
+
+Errors                   Feature 7           Feature 8        No Modifications  
+False Positive Rate:       12.579              12.264              12.390       
+False Negative Rate:       13.145              13.208              13.145       
+F1 Measure:                98.291              98.290              98.292       
+Accuracy:                  74.277              74.528              74.465       
+Error:                     25.723              25.472              25.535       
+
+=============== Effect of Adding a Set of Feature Complexities on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.327              12.264              12.264       
+False Negative Rate:       13.082              13.019              13.082       
+F1 Measure:                98.293              98.295              98.292       
+Accuracy:                  74.591              74.717              74.654       
+Error:                     25.409              25.283              25.346       
+
+Errors                No Modifications  
+False Positive Rate:       12.013       
+False Negative Rate:       13.522       
+F1 Measure:                98.275       
+Accuracy:                  74.465       
+Error:                     25.535       
+
+=============== Modified Model Error Over the Entire Training Data ===============
+Errors                    Modified        No Modifications  
+False Positive Rate:       12.320              12.570       
+False Negative Rate:       12.946              12.883       
+F1 Measure:                99.827              99.827       
+Accuracy:                  74.734              74.547       
+Error:                     25.266              25.453       
+Backend MacOSX is interactive backend. Turning interactive mode on.
+==============================2022-10-20 16:06:01==============================
+=============== Effect of Removing Identical Observations on Model Accuracy ===============
+-------------------- Gradient Decent --------------------
+Removed a 220 Identical Observations in the same class from Data
+Removed a 0 Identical Observations in diffrent classes from Data
+Errors                  Not Removed           Removed       
+False Positive Rate:       12.570              11.994       
+False Negative Rate:       12.883              13.613       
+F1 Measure:                99.827              99.790       
+Accuracy:                  74.547              74.393       
+Error:                     25.453              25.607       
+
+=============== Effect of Stepsize and Laso Const on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+
+-------------------- lambda k : 1/(5*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.390              12.327              12.327       
+False Negative Rate:       13.208              13.208              13.208       
+F1 Measure:                98.273              98.273              98.273       
+Accuracy:                  74.403              74.465              74.465       
+Error:                     25.597              25.535              25.535       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.201       
+False Negative Rate:       13.270       
+F1 Measure:                98.270       
+Accuracy:                  74.528       
+Error:                     25.472       
+
+
+-------------------- lambda k : 1/(10*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       11.761              11.698              11.698       
+False Negative Rate:       13.899              13.899              13.899       
+F1 Measure:                98.238              98.239              98.239       
+Accuracy:                  74.340              74.403              74.403       
+Error:                     25.660              25.597              25.597       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.635       
+False Negative Rate:       13.836       
+F1 Measure:                98.241       
+Accuracy:                  74.528       
+Error:                     25.472       
+
+
+-------------------- lambda k : 1/(50*(k+1)) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.956              12.956              12.956       
+False Negative Rate:       14.025              14.025              13.962       
+F1 Measure:                98.230              98.230              98.232       
+Accuracy:                  73.019              73.019              73.082       
+Error:                     26.981              26.981              26.918       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.956       
+False Negative Rate:       13.899       
+F1 Measure:                98.236       
+Accuracy:                  73.145       
+Error:                     26.855       
+
+
+-------------------- lambda k : 1/((k+1)**2) --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       13.899              13.899              13.899       
+False Negative Rate:       13.711              13.711              13.711       
+F1 Measure:                98.234              98.234              98.234       
+Accuracy:                  72.390              72.390              72.390       
+Error:                     27.610              27.610              27.610       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       13.899       
+False Negative Rate:       13.711       
+F1 Measure:                98.234       
+Accuracy:                  72.390       
+Error:                     27.610       
+
+
+-------------------- lambda k : 0.01 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       2.264               2.264               2.264        
+False Negative Rate:       31.069              31.132              31.132       
+F1 Measure:                96.867              96.857              96.857       
+Accuracy:                  66.667              66.604              66.604       
+Error:                     33.333              33.396              33.396       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       2.201        
+False Negative Rate:       31.572       
+F1 Measure:                96.792       
+Accuracy:                  66.226       
+Error:                     33.774       
+
+
+-------------------- lambda k : 0.001 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.138              12.075              12.138       
+False Negative Rate:       13.585              13.585              13.585       
+F1 Measure:                98.253              98.254              98.253       
+Accuracy:                  74.277              74.340              74.277       
+Error:                     25.723              25.660              25.723       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       11.698       
+False Negative Rate:       13.711       
+F1 Measure:                98.253       
+Accuracy:                  74.591       
+Error:                     25.409       
+
+
+-------------------- lambda k : 0.0001 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       12.138              12.201              12.264       
+False Negative Rate:       14.214              14.214              14.214       
+F1 Measure:                98.222              98.222              98.221       
+Accuracy:                  73.648              73.585              73.522       
+Error:                     26.352              26.415              26.478       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       12.264       
+False Negative Rate:       14.151       
+F1 Measure:                98.226       
+Accuracy:                  73.585       
+Error:                     26.415       
+
+
+-------------------- lambda k : 0.00001 --------------------
+Errors                   Lambda = 0        Lambda = 0.05        Lambda = 0.1    
+False Positive Rate:       46.541              46.541              46.541       
+False Negative Rate:       0.000               0.000               0.000        
+F1 Measure:                98.574              98.574              98.574       
+Accuracy:                  53.459              53.459              53.459       
+Error:                     46.541              46.541              46.541       
+
+Errors                  Lambda = 0.5    
+False Positive Rate:       46.541       
+False Negative Rate:       0.000        
+F1 Measure:                98.574       
+Accuracy:                  53.459       
+Error:                     46.541       
+
+=============== Effect of Tol and Max Iter on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+
+--------------------Tol = 0.001 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.453              12.453              12.453       
+False Negative Rate:       13.333              13.333              13.333       
+F1 Measure:                98.271              98.271              98.271       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+
+--------------------Tol = 0.0001 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.704              12.704              12.704       
+False Negative Rate:       13.082              13.082              13.082       
+F1 Measure:                98.284              98.284              98.284       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+
+--------------------Tol = 1e-05 --------------------
+Errors               Max_Iter = 10000.0 Max_Iter = 100000.0 Max_Iter = 1000000.0
+False Positive Rate:       12.704              12.642              12.642       
+False Negative Rate:       13.082              13.145              13.145       
+F1 Measure:                98.284              98.280              98.280       
+Accuracy:                  74.214              74.214              74.214       
+Error:                     25.786              25.786              25.786       
+
+
+=============== Effect of Removing Each Individual Feature on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.767              12.516              11.887       
+False Negative Rate:       13.145              14.277              14.025       
+F1 Measure:                98.271              98.221              98.236       
+Accuracy:                  74.088              73.208              74.088       
+Error:                     25.912              26.792              25.912       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.453              12.264              12.956       
+False Negative Rate:       13.145              13.396              13.082       
+F1 Measure:                98.279              98.265              98.277       
+Accuracy:                  74.403              74.340              73.962       
+Error:                     25.597              25.660              26.038       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.390              12.516              12.579       
+False Negative Rate:       14.025              13.145              12.956       
+F1 Measure:                98.232              98.275              98.285       
+Accuracy:                  73.585              74.340              74.465       
+Error:                     26.415              25.660              25.535       
+
+Errors                   Feature 10          Feature 11       No Modifications  
+False Positive Rate:       12.453              14.151              12.453       
+False Negative Rate:       13.648              13.145              13.019       
+F1 Measure:                98.253              98.264              98.284       
+Accuracy:                  73.899              72.704              74.528       
+Error:                     26.101              27.296              25.472       
+
+=============== Effect of Removing a Combination of Features on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                 Feature [1, 9]      Feature [1, 4]      Feature [4, 9]   
+False Positive Rate:       12.579              12.264              12.453       
+False Negative Rate:       13.145              13.145              13.082       
+F1 Measure:                98.286              98.288              98.292       
+Accuracy:                  74.277              74.591              74.465       
+Error:                     25.723              25.409              25.535       
+
+Errors               Feature [1, 4, 9]     Feature [5, 9]      Feature [5, 4]   
+False Positive Rate:       12.390              12.013              12.201       
+False Negative Rate:       12.956              13.333              13.396       
+F1 Measure:                98.296              98.285              98.280       
+Accuracy:                  74.654              74.654              74.403       
+Error:                     25.346              25.346              25.597       
+
+Errors                 Feature [1, 5]    Feature [5, 4, 9]  Feature [1, 5, 4, 9]
+False Positive Rate:       12.767              12.075              12.642       
+False Negative Rate:       13.396              13.270              13.082       
+F1 Measure:                98.274              98.287              98.290       
+Accuracy:                  73.836              74.654              74.277       
+Error:                     26.164              25.346              25.723       
+
+Errors                 Feature [3, 5]      Feature [3, 8]      Feature [5, 8]   
+False Positive Rate:       12.138              11.761              12.327       
+False Negative Rate:       13.711              14.088              13.648       
+F1 Measure:                98.263              98.247              98.266       
+Accuracy:                  74.151              74.151              74.025       
+Error:                     25.849              25.849              25.975       
+
+Errors               Feature [3, 5, 8]    No Modifications  
+False Positive Rate:       11.887              12.264       
+False Negative Rate:       14.025              13.270       
+F1 Measure:                98.251              98.285       
+Accuracy:                  74.088              74.465       
+Error:                     25.912              25.535       
+
+=============== Effect of Adding Feature Complexity on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.log(x + 1) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.516              12.579              12.579       
+False Negative Rate:       13.019              12.956              12.893       
+F1 Measure:                98.297              98.298              98.302       
+Accuracy:                  74.465              74.465              74.528       
+Error:                     25.535              25.535              25.472       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.453              12.642       
+False Negative Rate:       13.082              13.082              13.019       
+F1 Measure:                98.294              98.295              98.296       
+Accuracy:                  74.403              74.465              74.340       
+Error:                     25.597              25.535              25.660       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.642              12.516              12.767       
+False Negative Rate:       12.956              12.956              12.956       
+F1 Measure:                98.299              98.300              98.297       
+Accuracy:                  74.403              74.528              74.277       
+Error:                     25.597              25.472              25.723       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.log10(x + 1) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.642              12.642              12.642       
+False Negative Rate:       13.208              13.145              13.082       
+F1 Measure:                98.288              98.291              98.293       
+Accuracy:                  74.151              74.214              74.277       
+Error:                     25.849              25.786              25.723       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.579              12.642              12.642       
+False Negative Rate:       13.145              13.145              13.145       
+F1 Measure:                98.291              98.290              98.290       
+Accuracy:                  74.277              74.214              74.214       
+Error:                     25.723              25.786              25.786       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.642              12.516              12.767       
+False Negative Rate:       13.082              13.019              13.019       
+F1 Measure:                98.293              98.297              98.295       
+Accuracy:                  74.277              74.465              74.214       
+Error:                     25.723              25.535              25.786       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: np.sqrt(x) --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.579              12.642       
+False Negative Rate:       12.956              12.956              12.956       
+F1 Measure:                98.301              98.299              98.298       
+Accuracy:                  74.654              74.465              74.403       
+Error:                     25.346              25.535              25.597       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.579              12.390              12.453       
+False Negative Rate:       13.145              13.145              13.208       
+F1 Measure:                98.291              98.292              98.289       
+Accuracy:                  74.277              74.465              74.340       
+Error:                     25.723              25.535              25.660       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.453              12.516              12.893       
+False Negative Rate:       13.019              12.642              12.893       
+F1 Measure:                98.298              98.315              98.299       
+Accuracy:                  74.528              74.843              74.214       
+Error:                     25.472              25.157              25.786       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**2 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.390              12.579              12.579       
+False Negative Rate:       13.082              12.893              13.019       
+F1 Measure:                98.296              98.302              98.297       
+Accuracy:                  74.528              74.528              74.403       
+Error:                     25.472              25.472              25.597       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.642              12.327       
+False Negative Rate:       13.145              13.333              13.145       
+F1 Measure:                98.291              98.282              98.293       
+Accuracy:                  74.340              74.025              74.528       
+Error:                     25.660              25.975              25.472       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.201              12.264              12.390       
+False Negative Rate:       12.956              13.333              12.956       
+F1 Measure:                98.301              98.283              98.300       
+Accuracy:                  74.843              74.403              74.654       
+Error:                     25.157              25.597              25.346       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**3 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.642              12.579              12.453       
+False Negative Rate:       13.082              13.019              13.082       
+F1 Measure:                98.295              98.297              98.295       
+Accuracy:                  74.277              74.403              74.465       
+Error:                     25.723              25.597              25.535       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.642              12.453       
+False Negative Rate:       13.145              13.333              13.082       
+F1 Measure:                98.291              98.282              98.295       
+Accuracy:                  74.340              74.025              74.465       
+Error:                     25.660              25.975              25.535       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.201              12.390              12.390       
+False Negative Rate:       13.082              13.082              13.082       
+F1 Measure:                98.296              98.296              98.294       
+Accuracy:                  74.717              74.528              74.528       
+Error:                     25.283              25.472              25.472       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+
+-------------------- Gradient Decent --------------------
+-------------------- lambda x: x**4 --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.516              12.516              12.516       
+False Negative Rate:       13.082              13.208              12.956       
+F1 Measure:                98.294              98.289              98.301       
+Accuracy:                  74.403              74.277              74.528       
+Error:                     25.597              25.723              25.472       
+
+Errors                   Feature 4           Feature 5           Feature 6      
+False Positive Rate:       12.516              12.642              12.579       
+False Negative Rate:       13.208              13.270              13.270       
+F1 Measure:                98.288              98.284              98.286       
+Accuracy:                  74.277              74.088              74.151       
+Error:                     25.723              25.912              25.849       
+
+Errors                   Feature 7           Feature 8           Feature 9      
+False Positive Rate:       12.201              12.579              12.767       
+False Negative Rate:       13.145              13.019              13.019       
+F1 Measure:                98.293              98.297              98.295       
+Accuracy:                  74.654              74.403              74.214       
+Error:                     25.346              25.597              25.786       
+
+Errors                No Modifications  
+False Positive Rate:       12.579       
+False Negative Rate:       13.270       
+F1 Measure:                98.286       
+Accuracy:                  74.151       
+Error:                     25.849       
+
+=============== Effect of Adding a Set of Feature Complexities on Model Accuracy ===============
+
+-------------------- Gradient Decent --------------------
+Errors                   Feature 1           Feature 2           Feature 3      
+False Positive Rate:       12.201              12.138              12.138       
+False Negative Rate:       13.019              12.956              13.208       
+F1 Measure:                98.296              98.300              98.288       
+Accuracy:                  74.780              74.906              74.654       
+Error:                     25.220              25.094              25.346       
+
+Errors                No Modifications  
+False Positive Rate:       11.887       
+False Negative Rate:       13.459       
+F1 Measure:                98.279       
+Accuracy:                  74.654       
+Error:                     25.346       
+
+=============== Modified Model Error Over the Entire Training Data ===============
+Errors                    Modified        No Modifications  
+False Positive Rate:       12.320              12.570       
+False Negative Rate:       12.758              12.883       
+F1 Measure:                99.828              99.827       
+Accuracy:                  74.922              74.547       
+Error:                     25.078              25.453       
