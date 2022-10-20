@@ -11,8 +11,8 @@ def main():
     pltStd, pltMean, pltSpread, pltHist = False, False, False, True
 
     # [Parameteres] : Data Files to read from
-    dataFiles = ["./air_quality.csv",
-                 "./liver_patient.csv"]
+    dataFiles = ["/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv",
+                 "/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/liver_patient.csv"]
     
     # [Parameteres] : Model Accuracy
     tol      = 1e-5

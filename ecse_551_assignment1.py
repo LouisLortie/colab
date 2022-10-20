@@ -27,7 +27,7 @@ plt.rcParams.update({
                          "lines.linewidth" : 3,
                          "font.size" : 12,
                          "figure.constrained_layout.use" : True,
-                         "hist.bins" : 100 
+                         "hist.bins" : 20 
                          })
 
 
@@ -399,16 +399,37 @@ def fold_prep(data, train_num, validation_num, test_num):
 #%% #@title plot hist: Function that plots the histogram of one feature
 # The number of bins can be changed via rcParams above.
 
-def plot_hist(feat_class1, feat_class0, feat_num):
-  fig, ax = plt.subplots(2, 1, sharex=True)
-  ax[0].hist(feat_class1, color="b", label=r"Class y = 1")
-  ax[1].hist(feat_class0, color="r", label=r"Class y = 0")
-  ax[0].set_title("Feature %i distribution comparison between classes" %(feat_num + 1))
-  ax[0].legend(loc='upper right')
-  ax[1].legend(loc='upper right')
-  plt.tight_layout
+def plot_hist(data_class1, data_class0):
+    fig, ax = plt.subplots(int(np.ceil(data_class1.shape[1]/4)), 4, sharex=False)
 
-  return 0
+    data = np.concatenate((data_class1, data_class0), axis=0)
+
+    for i in range(data.shape[1]):
+        ax[int(i/4), i%4].hist([data_class1[:, i], data_class0[:, i]], density=True, label=['class1', 'class0'], color=['blue', 'red'])
+        ax[int(i/4), i%4].set_title('Feature ' + str(i+1))
+
+        #show average and standard deviation
+        textstr = '\n'.join((
+            r'$\mu_{class0}=%.2f$' % (np.mean(data_class0[:, i]), ),
+            r'$\sigma_{class0}=%.2f$' % (np.std(data_class0[:, i]), ), 
+            r'$\mu_{class1}=%.2f$' % (np.mean(data_class1[:, i]), ),
+            r'$\sigma_{class1}=%.2f$' % (np.std(data_class1[:, i]), )))
+
+        ax[int(i/4), i%4].text(0.70, 0.70, textstr, transform=ax[int(i/4), i%4].transAxes)
+            
+        # ax[int(i/4), i%4].text(0.5, 0.5, 'mean: ' + str(np.round(np.mean(data[:, i]), 2)) + 'standard deviation: ' + str(np.round(np.std(data[:, i]), 2)), horizontalalignment='center', verticalalignment='center')
+        
+    ax[0, 0].legend(loc='center right')
+
+
+#   ax[0,0].hist(data_class1, color="b", density=False, label=r"Class y = 1")
+#   ax[1,0].hist(data_class0, color="r", density=False, label=r"Class y = 0")
+#   ax[0,0].set_title("Feature %i distribution comparison between classes" %(feat_num + 1))
+#   ax[0,0].legend(loc='upper right')
+#   ax[1,0].legend(loc='upper right')
+    plt.tight_layout
+
+    return 0
 
 
 #%% #@title prediction_line: Function that plots the regression line
@@ -461,7 +482,7 @@ def main():
 
     # Reading liver patient data
     # lp_csv = pd.read_csv("/content/drive/MyDrive/ecse_551/assignment1/liver_patient.csv")               # Active on drive
-    lp_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/air_quality.csv", header=None)   # Active on colab
+    lp_csv = pd.read_csv("/home/louis/Documents/mcgill_classes/ecse_551/assignment1/colab/liver_patient.csv", header=None)   # Active on colab
     
 
     # Array
@@ -473,13 +494,14 @@ def main():
     lp_x, lp_y = get_xy_data(lp_data)
 
 
-    feat = 8   # Feature to analyse.
+    feat = 7   # Feature to analyse.
 
     # aq_data_aug = increase_complexity(aq_data, np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
-    data_class1, data_class0 = data_separation(aq_data)
+    data_class1, data_class0 = data_separation(lp_data)
 
-    plot_hist(data_class1[:, feat], data_class0[:, feat], feat)
+    # plot_hist(data_class1[:, feat], data_class0[:, feat], feat)
+    plot_hist(data_class1[:, :-1], data_class0[:, :-1])
 
     # All model creation happens here
 
@@ -493,7 +515,7 @@ def main():
 
     model_label = "lda"                 # can be changed to "lda", "qda" or "disc"
 
-    prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
+    # prediction_line(data_class1[:, :-1], data_class0[:, :-1], w)
 
     test_loop(aq_data, model_lda, model_label)
 
@@ -517,4 +539,3 @@ def main():
   
 if __name__ == '__main__':
     main()
-# %%

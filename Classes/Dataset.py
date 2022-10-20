@@ -71,7 +71,7 @@ class Dataset:
                          "lines.linewidth" : 3,                          # you should make this general for all plots
                          "font.size" : 17,
                          "figure.constrained_layout.use" : True,
-                         "hist.bins" : 20 
+                         "hist.bins" : 40 
                          })
 
         fig, ax = plt.subplots(int(np.ceil(self.Class1.X.shape[1]/4)), 4, sharex=False)
